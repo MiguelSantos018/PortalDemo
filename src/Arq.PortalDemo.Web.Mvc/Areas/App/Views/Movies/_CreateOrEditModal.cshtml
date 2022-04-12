@@ -1,0 +1,79 @@
+﻿@using Abp.Authorization.Users
+@using Abp.Configuration
+@using Abp.Extensions
+@using Abp.Json
+@using Abp.Net.Mail
+@using Abp.Zero.Configuration
+@using Arq.PortalDemo.Authorization.Users
+@using Arq.PortalDemo.Web.Areas.App.Models.Common.Modals
+@using Arq.PortalDemo.Web.Areas.App.Models.Movies
+@model CreateOrEditMovieModalViewModel
+
+@await Html.PartialAsync("~/Areas/App/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditMovie") + ": " + Model.Title) : L("NewMovie")))
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+
+<div class="modal-body user-edit-modal">
+    <div class="tab-pane pt-5 active" id="MovieInformationsTab" role="tabpanel">
+
+
+        <form name="MovieInformationsForm" id="MovieInformationsForm" role="form" novalidate class="form-validation">
+            <input type="hidden" name="Id" value="@Model.Id" />
+
+            <div class="row">
+                @*<form id="ChangeProfilePictureModalForm" method="POST" action="@(ApplicationPath + "App/Movies/UploadImage")">*@
+                <div class="col-sm-3 text-center margin-top-15 margin-bottom-15">
+
+                    <div class="image-input image-input-outline" data-kt-image-input="true">
+                        <img id="Picture" class="image-input-wrapper w-125px h-125px" src="@(Model.IsEditMode ?"/App/Movies/GetFile/"+Model.Id : Url.Content("~/Common/Images/default-profile-picture.png"))" alt="Red dot" />
+                        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="" data-bs-original-title="Change avatar">
+                            <i class="bi bi-pencil-fill fs-7"></i>
+                            <input type="file" name="MoviePicture" id="MoviePicture" accept=".png, .jpg, .jpeg">
+                            <input type="hidden" name="avatar_remove">
+                        </label>
+                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="" data-bs-original-title="Cancel avatar">
+                            <i class="bi bi-x fs-2"></i>
+                        </span>
+                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="" data-bs-original-title="Remove avatar">
+                            <i class="bi bi-x fs-2"></i>
+                        </span>
+                    </div>
+                </div>
+                <!-- </form>-->
+
+
+                <div class="col-sm-9">
+                    <div class="mb-5">
+                        <label for="Title" class="form-label">@L("Title")</label>
+                        <input id="Title" class="form-control" value="@Model.Title" type="text" name="Title" required>
+                    </div>
+
+                    <div class="mb-5">
+                        <label for="Description" class="form-label">@L("Description")</label>
+                        <input id="Description" type="text" name="Description" class="form-control" value="@Model.Description" required>
+                    </div>
+                    <div class="mb-5">
+                        <label for="Category" class="form-label">@L("Category")</label>
+
+                        <select class="background form-control" data-placeholder="@L("SelectCategory")" style="width: 100%" id="CategoryCombobox" name="Options" required>
+                            <option></option>
+                            @foreach (var o in Model.Options)
+                            {
+                <option value="@o.Id" selected="@o.Selected">@o.Name</option>
+}
+                        </select>
+                    </div>
+                    <div class="mb-5">
+                        <label for="Date" class="form-label">@L("Description")</label>
+                        <input type="datetime" name="SampleDatePicker" class="form-control date-picker"> <input id="Date" type="text" name="Date" class="form-control" value="@Model.Description" required>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/App/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

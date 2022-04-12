@@ -1,0 +1,37 @@
+﻿@using Abp.Authorization.Users
+@using Abp.Configuration
+@using Abp.Extensions
+@using Abp.Json
+@using Abp.Net.Mail
+@using Abp.Zero.Configuration
+@using Arq.PortalDemo.Authorization.Users
+@using Arq.PortalDemo.Web.Areas.App.Models.Common.Modals
+@using Arq.PortalDemo.Web.Areas.App.Models.Category
+@model CreateOrUpdateViewModel
+
+@await Html.PartialAsync("~/Areas/App/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditCategory") + ": " + Model.Name) : L("NewCategory")))
+
+<div class="modal-body user-edit-modal">
+    <div class="tab-pane pt-5 active" id="CategoryInformationsTab" role="tabpanel">
+        <form name="CategoryInformationsForm" role="form" novalidate class="form-validation">
+
+            <input type="hidden" name="Id" value="@Model.Id" />
+
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="mb-5">
+                        <label for="Name" class="form-label">@L("Name")</label>
+                        <input id="Name" class="form-control" value="@Model.Name" type="text" name="Name">
+                    </div>
+
+                    <div class="mb-5">
+                        <label for="Description" class="form-label">@L("Description")</label>
+                        <input id="Description" type="text" name="Description" class="form-control" value="@Model.Description">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/App/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")
